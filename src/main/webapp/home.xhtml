@@ -1,0 +1,92 @@
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the
+    distribution for a full listing of individual contributors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>tax calculator app</title>
+</h:head>
+
+<h:body>
+
+<h1>Calculate Tax</h1>
+<div id="container">
+    <h:form id="response">
+        <h:panelGrid columns="2">
+
+            <p:outputLabel for="income" value="Income:" />
+            <p:inputText id="income" value="#{taxview.person.income}" required="true" requiredMessage="Income is required."/>
+
+            <p:outputLabel for="frequency" value="Income Frequency:" required="true" requiredMessage="Income Frequency is required." />
+            <p:selectOneMenu id="frequency" value="#{taxview.incomeFreguency}" style="width:125px">
+                <f:selectItem itemLabel="Select Frequency" itemValue="" />
+                <f:selectItem itemLabel="Monthly" itemValue="Monthly" />
+                <f:selectItem itemLabel="Annually" itemValue="Annually" />
+            </p:selectOneMenu>
+
+            <p:outputLabel for="age" value="Age:" />
+            <p:inputText id="age" value="#{taxview.person.age}" required="true" requiredMessage="Age is required." />
+
+            <p:outputLabel for="taxYear" value="Tax Year:" required="true" requiredMessage="Tax Year is required." />
+            <p:selectOneMenu id="taxYear" value="#{taxview.taxYear}" style="width:125px">
+                <f:selectItem itemLabel="Select Tax Year" itemValue="" />
+                <f:selectItem itemLabel="2017 (Mar 2016-Feb 2017)" itemValue="2017" />
+                <f:selectItem itemLabel="2018 (Mar 2017-Feb 2018)" itemValue="2018" />
+            </p:selectOneMenu>
+
+            <p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-check" action="#{taxview.getTaxCalculation}" />
+
+            <p:dialog header="Tax Calculations" modal="true" showEffect="bounce" widgetVar="dlg" resizable="false">
+                <p:panelGrid columns="2" id="display" columnClasses="label,value">
+                    <h:outputText value="You Earn an Annual Taxable income of:" />
+                    <h:outputText value="#{taxview.person.taxableIncome}" />
+
+                    <h:outputText value="Your Tax Before Credits (annually):" />
+                    <h:outputText value="#{taxview.person.annualTaxBefore}" />
+
+                    <h:outputText value="Your Tax Credits:" />
+                    <h:outputText value="#{taxview.person.rebates}" />
+
+                    <h:outputText value="Tax After Credits (annually):" />
+                    <h:outputText value="#{taxview.person.annualTaxAfter}" />
+
+                    <h:outputText value="Tax After Credits (monthly):" />
+                    <h:outputText value="#{taxview.person.monthlyTaxAfter}" />
+
+                    <h:outputText value="Your Net income (annually):" />
+                    <h:outputText value="#{taxview.person.annualNetSalary}" />
+
+                    <h:outputText value="Your Net income (monthly):" />
+                    <h:outputText value="#{taxview.person.monthlyNetSalary}" />
+
+
+
+                </p:panelGrid>
+            </p:dialog>
+
+        </h:panelGrid>
+</h:form>
+</div>
+
+</h:body>
+</html>
