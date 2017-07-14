@@ -44,8 +44,9 @@ public class TaxView implements Serializable{
     }
 
     public Person getTaxCalculation(){
-        if(incomeFreguency.equals("Monthly"))
-            person.setIncome(person.getIncome()*12);
+        if(incomeFreguency.equals("Monthly")) {
+            person.setIncome(person.getIncome() * 12);
+        }
         System.out.println("TAX YEAR: "+taxYear+" P: "+person.getIncome());
          person = TaxCalculator.findTax(taxYear,person);
 
