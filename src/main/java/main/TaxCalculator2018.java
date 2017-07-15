@@ -5,6 +5,7 @@ import entity.TaxPayer;
 
 import javax.ejb.Stateful;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * Created by SamkeDl on 15/07/2017.
@@ -12,14 +13,14 @@ import java.io.Serializable;
 @Stateful
 public class TaxCalculator2018 implements Calculator,Serializable {
     @Override
-    public double calculateTaxableIncome(double income, int medicalAidDeduction) {
-        return income-medicalAidDeduction;
+    public BigDecimal calculateTaxableIncome(BigDecimal income, int medicalAidDeduction) {
+        return income.subtract(new BigDecimal(medicalAidDeduction));
     }
 
     @Override
-    public double calculateTaxRate(double taxableIncome) {
+    public BigDecimal calculateTaxRate(BigDecimal taxableIncome) {
         System.out.println("Calculating tax on "+taxableIncome+" income");
-        double tax = 0;
+        BigDecimal tax = 0;
         if (taxableIncome <= 189880) {
             tax = taxableIncome * 0.18;
             System.out.println("TAX calculated on 18%");
@@ -107,7 +108,7 @@ public class TaxCalculator2018 implements Calculator,Serializable {
         taxPayer.setTaxableIncome(taxCalculator2018.calculateTaxableIncome(taxPayer.getIncome(),taxPayer.getMedicalAid()));
 
         //tax before credits
-        double taxBeforeCredits = taxCalculator2018.calculateTaxRate(taxPayer.getTaxableIncome());
+        BigDecimal taxBeforeCredits = taxCalculator2018.calculateTaxRate(taxPayer.getTaxableIncome());
         taxPayer.setAnnualTaxBefore(taxBeforeCredits);
         taxPayer.setMonthlyTaxBefore(taxBeforeCredits/12);
         taxPayer.setTaxBeforeCredits(taxBeforeCredits);
@@ -151,4 +152,5 @@ public class TaxCalculator2018 implements Calculator,Serializable {
 
         return taxPayer;
     }
+
 }

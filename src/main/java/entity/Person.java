@@ -2,6 +2,7 @@ package entity;
 
 import javax.ejb.Stateful;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * Created by SamkeDl on 12/07/2017.
@@ -9,7 +10,7 @@ import java.io.Serializable;
 @Stateful
 public abstract class Person implements Serializable{
     private int age;
-    private int income;
+    private BigDecimal income;
 
     public int getAge() {
         return age;
@@ -19,11 +20,11 @@ public abstract class Person implements Serializable{
         this.age = age;
     }
 
-    public int getIncome() {
+    public BigDecimal getIncome() {
         return income;
     }
 
-    public void setIncome(int income) {
+    public void setIncome(BigDecimal income) {
         this.income = income;
     }
 

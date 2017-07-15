@@ -7,17 +7,19 @@ import entity.TaxPayer;
 import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * Created by SamkeDl on 12/07/2017.
  */
 @Stateful
 public class TaxYear2018 implements Serializable {
+    /*
     public static TaxPayer calculateTax(Person person){
         TaxPayer taxPayer = new TaxPayer();
 
         //tax before credits
-        double taxBeforeCredits = getTaxRate(person.getIncome());
+        BigDecimal taxBeforeCredits = getTaxRate(person.getIncome());
         taxPayer.setAnnualTaxBefore(taxBeforeCredits);
         taxPayer.setMonthlyTaxBefore(taxBeforeCredits/12);
 
@@ -51,9 +53,9 @@ public class TaxYear2018 implements Serializable {
 
         return taxPayer;
     }
-    private static double getTaxRate(int income){
+    private static BigDecimal getTaxRate(BigDecimal income){
         System.out.println("Calculating tax on "+income+" income");
-        double tax = 0;
+        BigDecimal tax = 0;
         if (income <= 188000) {
             tax = income * 0.18;
             System.out.println("TAX calculated on 18%");
@@ -108,5 +110,5 @@ public class TaxYear2018 implements Serializable {
             return  TERTIARY;
         return 0;
     }
-
+*/
 }

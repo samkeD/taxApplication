@@ -6,6 +6,7 @@ import main.Calculator;
 
 import javax.ejb.Stateful;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * Created by SamkeDl on 15/07/2017.
@@ -13,36 +14,42 @@ import java.io.Serializable;
 @Stateful
 public class TaxCalculator2017 implements Calculator,Serializable {
     @Override
-    public double calculateTaxableIncome(double income,int medicalAidDeduction) {
-        return income-medicalAidDeduction;
+    public BigDecimal calculateTaxableIncome(BigDecimal income, int medicalAidDeduction) {
+        return income.subtract(new BigDecimal(medicalAidDeduction));
     }
 
     @Override
-    public double calculateTaxRate(double taxableIncome) {
+    public BigDecimal calculateTaxRate(BigDecimal taxableIncome) {
             System.out.println("Calculating tax on "+taxableIncome+" taxableIncome");
-            double tax = 0;
-            if (taxableIncome <= 188000) {
-                tax = taxableIncome * 0.18;
+            BigDecimal tax = new BigDecimal(0);
+        BigDecimal taxableIcomeAbove = new BigDecimal(0);
+            if (taxableIncome.compareTo(new BigDecimal(188000)) <= 0) {
+                tax = taxableIncome.multiply(new BigDecimal(0.18));
                 System.out.println("TAX calculated on 18%");
             }
-            else if (taxableIncome>=188001 && taxableIncome<=293600) {
-                tax = 33840 + (taxableIncome - 188000) * 0.26;
+            else if (taxableIncome.compareTo(new BigDecimal(188001))>= 0 && taxableIncome.compareTo(new BigDecimal(293600))<=0) {
+                taxableIcomeAbove = taxableIncome.subtract(new BigDecimal(188000)).multiply(new BigDecimal(0.26));
+                tax = taxableIcomeAbove.setScale(2,BigDecimal.ROUND_HALF_EVEN).add(new BigDecimal(33840));
                 System.out.println("TAX calculated on 26%");
             }
-            else if (taxableIncome>=293601 && taxableIncome<=406400) {
-                tax = 61296 + (taxableIncome - 293600) * 0.31;
-                System.out.println("TAX calculated on 31%");
+            else if (taxableIncome.compareTo(new BigDecimal(293601))>=0 && taxableIncome.compareTo(new BigDecimal(406400))<=0) {
+                taxableIcomeAbove = taxableIncome.subtract(new BigDecimal(293600)).multiply(new BigDecimal(0.31));
+                tax = taxableIcomeAbove.setScale(2,BigDecimal.ROUND_HALF_EVEN).add(new BigDecimal(61296));
+                System.out.println("TAX calculated on 31%" +tax);
             }
-            else if (taxableIncome>=406401 && taxableIncome<=550100) {
-                tax = 96264 + (taxableIncome - 406400) * 0.36;
+            else if (taxableIncome.compareTo(new BigDecimal(406401))>=0 && taxableIncome.compareTo(new BigDecimal(550100))<=0) {
+                taxableIcomeAbove = taxableIncome.subtract(new BigDecimal(406400)).multiply(new BigDecimal(0.36));
+                tax = taxableIcomeAbove.setScale(2,BigDecimal.ROUND_HALF_EVEN).add(new BigDecimal(96264));
                 System.out.println("TAX calculated on 36%");
             }
-            else if (taxableIncome>=550101 && taxableIncome<=701300) {
-                tax = 147996 + (taxableIncome - 550100) * 0.39;
+            else if (taxableIncome.compareTo(new BigDecimal(550101))>=0 && taxableIncome.compareTo(new BigDecimal(701300))<=0) {
+                taxableIcomeAbove = taxableIncome.subtract(new BigDecimal(550100)).multiply(new BigDecimal(0.39));
+                tax = taxableIcomeAbove.setScale(2,BigDecimal.ROUND_HALF_EVEN).add( new BigDecimal(147996));
                 System.out.println("TAX calculated on 39%");
             }
-            else if (taxableIncome>=701301) {
-                tax = 206964 + (taxableIncome - 701300) * 0.41;
+            else if (taxableIncome.compareTo(new BigDecimal(701301))>=0) {
+                taxableIcomeAbove = taxableIncome.subtract(new BigDecimal(701300)).multiply(new BigDecimal(0.41));
+                tax = taxableIcomeAbove.setScale(2,BigDecimal.ROUND_HALF_EVEN).add(new BigDecimal(206964));
                 System.out.println("TAX calculated on 41%");
             }
             return tax;
@@ -90,48 +97,53 @@ public class TaxCalculator2017 implements Calculator,Serializable {
         TaxCalculator2017 taxCalculator2017 = new TaxCalculator2017();
         TaxPayer taxPayer = new TaxPayer();
         taxPayer.setIncome(person.getIncome());
-        taxPayer.setMedicalAid(taxCalculator2017.calculateMedicalAidCredits(medicalAidDeduction));
-        taxPayer.setTaxableIncome(taxCalculator2017.calculateTaxableIncome(taxPayer.getIncome(),taxPayer.getMedicalAid()));
-
+        taxPayer.setMedicalAid(new BigDecimal(taxCalculator2017.calculateMedicalAidCredits(medicalAidDeduction)));
+        taxPayer.setTaxableIncome(taxCalculator2017.calculateTaxableIncome(taxPayer.getIncome(),
+                taxPayer.getMedicalAid().intValue()));
+        System.out.println("TAxable income:"+taxPayer.getTaxableIncome());
         //tax before credits
-        double taxBeforeCredits = taxCalculator2017.calculateTaxRate(taxPayer.getTaxableIncome());
+        BigDecimal taxBeforeCredits = taxCalculator2017.calculateTaxRate(taxPayer.getTaxableIncome());
+        System.out.println("Tax before credits: "+taxBeforeCredits);
         taxPayer.setAnnualTaxBefore(taxBeforeCredits);
-        taxPayer.setMonthlyTaxBefore(taxBeforeCredits/12);
-        taxPayer.setTaxBeforeCredits(taxBeforeCredits);
+        taxPayer.setTaxBeforeCredits(taxBeforeCredits.setScale(2,BigDecimal.ROUND_HALF_EVEN));
 
         //tax rebates
-        double rebates = taxCalculator2017.calculateTaxCredits(person.getAge());
+        BigDecimal rebates = new BigDecimal(taxCalculator2017.calculateTaxCredits(person.getAge()));
+        System.out.println("retates: "+rebates);
         taxPayer.setRebates(rebates);
 
 
         //tax threshold
-        taxPayer.setThreshold(taxCalculator2017.calculateTaxThreshold(person.getAge()));
+        taxPayer.setThreshold(new BigDecimal(taxCalculator2017.calculateTaxThreshold(person.getAge())));
 
         //tax after credits
-        double taxAfterCredits = taxBeforeCredits - rebates;
-        if(taxAfterCredits < taxPayer.getThreshold()){
+        BigDecimal taxAfterCredits = taxBeforeCredits.subtract(rebates);
+        System.out.println("Tax after credits:"+taxAfterCredits);
+        if(taxAfterCredits.compareTo(taxPayer.getThreshold()) < 0){
+            System.out.println("TAX LESS THEN THRESHOLD");
             taxPayer.setAnnualTaxAfter(taxAfterCredits);
-            taxPayer.setMonthlyTaxAfter(taxAfterCredits/12);
-            taxPayer.setAnnualNetSalary(person.getIncome() - taxAfterCredits);
-            taxPayer.setMonthlyNetSalary(taxPayer.getAnnualNetSalary()/12);
-
             taxPayer.setTaxAfterCredits(taxAfterCredits);
-            taxPayer.setNetIncome(taxPayer.getAnnualNetSalary());
+            taxPayer.setNetIncome(person.getIncome().subtract(taxAfterCredits));
         }
         else{
             taxPayer.setAnnualTaxAfter(taxPayer.getThreshold());
-            taxPayer.setMonthlyTaxAfter(taxPayer.getThreshold()/12);
-            taxPayer.setAnnualNetSalary(person.getIncome()- taxPayer.getThreshold());
-            taxPayer.setMonthlyNetSalary(taxPayer.getAnnualNetSalary()/12);
             //annuals
             taxPayer.setTaxAfterCredits(taxPayer.getThreshold());
-            taxPayer.setNetIncome(taxPayer.getAnnualNetSalary());
+            taxPayer.setNetIncome(person.getIncome().subtract(taxPayer.getThreshold()));
         }
         if(incomeFrequency.equals("Monthly")){
-            taxPayer.setTaxBeforeCredits(taxPayer.getTaxBeforeCredits()/12);
-            taxPayer.setTaxAfterCredits(taxPayer.getTaxAfterCredits()/12);
-            taxPayer.setNetIncome(taxPayer.getNetIncome()/12);
-            taxPayer.setRebates(taxPayer.getRebates()/12);
+            System.out.println("Inside Monthly");
+            taxPayer.setTaxBeforeCredits(taxPayer.getTaxBeforeCredits().divide(new BigDecimal(12),2,BigDecimal.ROUND_HALF_EVEN));
+            System.out.println("setTaxBeforeCredits = "+taxPayer.getTaxBeforeCredits());
+            taxPayer.setTaxAfterCredits(taxPayer.getTaxAfterCredits().divide(new BigDecimal(12),2,BigDecimal.ROUND_HALF_EVEN));
+            System.out.println("setTaxAfterCredits = "+taxPayer.getTaxAfterCredits());
+
+            taxPayer.setNetIncome(taxPayer.getNetIncome().divide(new BigDecimal(12),2,BigDecimal.ROUND_HALF_EVEN));
+            System.out.println("setNetIncome = "+taxPayer.getNetIncome());
+
+            taxPayer.setRebates(taxPayer.getRebates().divide(new BigDecimal(12),2,BigDecimal.ROUND_HALF_EVEN));
+            System.out.println("setRebates = "+taxPayer.getRebates());
+
         }
 
 

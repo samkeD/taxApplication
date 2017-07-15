@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -56,7 +57,7 @@ public class TaxView implements Serializable{
     public Person getTaxCalculation(){
         System.out.println("Inside getTaxCalculation");
         if(incomeFreguency.equals("Monthly")) {
-            person.setIncome(person.getIncome() * 12);
+            person.setIncome(person.getIncome().multiply(new BigDecimal(12)));
         }
         System.out.println("TAX YEAR: "+taxYear+" P: "+person.getIncome());
          person = taxCalculator.findTax(taxYear,person,incomeFreguency,medicalAidMember);

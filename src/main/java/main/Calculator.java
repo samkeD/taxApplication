@@ -1,5 +1,7 @@
 package main;
 
+import java.math.BigDecimal;
+
 /**
  * Created by SamkeDl on 15/07/2017.
  */
@@ -23,8 +25,8 @@ public interface Calculator {
     int FIRST_DEPENDENT = 286;
     int ADDITIONAL_DEPENTANT = 192;
 
-    double calculateTaxableIncome(double income,int medicalAidDeduction);
-    double calculateTaxRate(double taxableIncome);
+    BigDecimal calculateTaxableIncome(BigDecimal income, int medicalAidDeduction);
+    BigDecimal calculateTaxRate(BigDecimal taxableIncome);
     int calculateTaxCredits(int age);
     int calculateTaxThreshold(int age);
     int calculateMedicalAidCredits(int members);

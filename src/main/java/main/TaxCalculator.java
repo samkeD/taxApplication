@@ -20,7 +20,7 @@ public class TaxCalculator implements Year,Serializable {
                 }
                 else if(year == 2018) {
                     TaxCalculator2018 taxCalculator2018=new TaxCalculator2018();
-                    taxPayer = taxCalculator2018.calculateTax(person, incomeFrequency, medicalAidDeduction);
+                    //taxPayer = taxCalculator2018.calculateTax(person, incomeFrequency, medicalAidDeduction);
                 }
                 else
                     System.out.println("No TAX information for year "+year);
