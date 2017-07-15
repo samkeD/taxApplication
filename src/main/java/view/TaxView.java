@@ -22,10 +22,20 @@ import java.util.List;
 
 @ManagedBean(name = "taxview" ,eager = true)
 public class TaxView implements Serializable{
-
     private Person person= new TaxPayer();
+    TaxCalculator taxCalculator=new TaxCalculator();
+
     private int taxYear;
     private String incomeFreguency;
+    private int medicalAidMember;
+
+    public int getMedicalAidMember() {
+        return medicalAidMember;
+    }
+
+    public void setMedicalAidMember(int medicalAidMember) {
+        this.medicalAidMember = medicalAidMember;
+    }
 
     public String getIncomeFreguency() {
         return incomeFreguency;
@@ -44,11 +54,12 @@ public class TaxView implements Serializable{
     }
 
     public Person getTaxCalculation(){
+        System.out.println("Inside getTaxCalculation");
         if(incomeFreguency.equals("Monthly")) {
             person.setIncome(person.getIncome() * 12);
         }
         System.out.println("TAX YEAR: "+taxYear+" P: "+person.getIncome());
-         person = TaxCalculator.findTax(taxYear,person);
+         person = taxCalculator.findTax(taxYear,person,incomeFreguency,medicalAidMember);
 
        return person;
     }

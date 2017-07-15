@@ -5,7 +5,6 @@ import entity.Person;
 import entity.TaxPayer;
 
 import javax.ejb.Stateful;
-import javax.ejb.Stateless;
 import java.io.Serializable;
 
 /**
@@ -13,7 +12,7 @@ import java.io.Serializable;
  */
 @Stateful
 public class TaxYear2017 implements Serializable {
-    public static TaxPayer calculateTax(Person person){
+    public static TaxPayer calculateTax(Person person,String incomeFrequency,int medicalAidDeduction){
         TaxPayer taxPayer = new TaxPayer();
         taxPayer.setIncome(person.getIncome());
         taxPayer.setTaxableIncome(person.getIncome());
@@ -22,6 +21,7 @@ public class TaxYear2017 implements Serializable {
         double taxBeforeCredits = getTaxRate(person.getIncome());
         taxPayer.setAnnualTaxBefore(taxBeforeCredits);
         taxPayer.setMonthlyTaxBefore(taxBeforeCredits/12);
+        taxPayer.setTaxBeforeCredits(taxBeforeCredits);
 
         //tax rebates
         double rebates = getTaxCredits(person.getAge());
@@ -39,14 +39,23 @@ public class TaxYear2017 implements Serializable {
             taxPayer.setAnnualNetSalary(person.getIncome() - taxAfterCredits);
             taxPayer.setMonthlyNetSalary(taxPayer.getAnnualNetSalary()/12);
 
+            taxPayer.setTaxAfterCredits(taxAfterCredits);
+            taxPayer.setNetIncome(taxPayer.getAnnualNetSalary());
         }
         else{
             taxPayer.setAnnualTaxAfter(taxPayer.getThreshold());
             taxPayer.setMonthlyTaxAfter(taxPayer.getThreshold()/12);
-            taxPayer.setAnnualNetSalary(taxPayer.getAnnualTaxBefore()- taxPayer.getThreshold());
+            taxPayer.setAnnualNetSalary(person.getIncome()- taxPayer.getThreshold());
             taxPayer.setMonthlyNetSalary(taxPayer.getAnnualNetSalary()/12);
-
-
+            //annuals
+            taxPayer.setTaxAfterCredits(taxPayer.getThreshold());
+            taxPayer.setNetIncome(taxPayer.getAnnualNetSalary());
+        }
+        if(incomeFrequency.equals("Monthly")){
+            taxPayer.setTaxBeforeCredits(taxPayer.getTaxBeforeCredits()/12);
+            taxPayer.setTaxAfterCredits(taxPayer.getTaxAfterCredits()/12);
+            taxPayer.setNetIncome(taxPayer.getNetIncome()/12);
+            taxPayer.setRebates(taxPayer.getRebates()/12);
         }
 
 

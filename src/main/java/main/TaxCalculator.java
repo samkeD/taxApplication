@@ -1,22 +1,27 @@
 package main;
 
 import entity.*;
+import main.imp.TaxCalculator2017;
 
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import java.io.Serializable;
-
 
 /**
  * Created by SamkeDl on 10/07/2017.
  */
-@Stateless
+@Stateful
 public class TaxCalculator implements Year,Serializable {
-    public static TaxPayer findTax(Integer year,Person person){
+    public  TaxPayer findTax(int year,Person person,String incomeFrequency,int medicalAidDeduction){
         TaxPayer taxPayer = new TaxPayer() ;
-                if (year.equals(2017))
-                 taxPayer  = TaxYear2017.calculateTax(person);
-                else if(year == 2018)
-                    taxPayer = TaxYear2018.calculateTax(person);
+                if (year==2017) {
+                    TaxCalculator2017 taxCalculator2017 = new TaxCalculator2017();
+                    taxPayer = taxCalculator2017.calculateTax(person, incomeFrequency, medicalAidDeduction);
+                }
+                else if(year == 2018) {
+                    TaxCalculator2018 taxCalculator2018=new TaxCalculator2018();
+                    taxPayer = taxCalculator2018.calculateTax(person, incomeFrequency, medicalAidDeduction);
+                }
                 else
                     System.out.println("No TAX information for year "+year);
 
@@ -35,16 +40,7 @@ public class TaxCalculator implements Year,Serializable {
         return taxPayer;
         }
 
-    public static void main(String [] s){
-        Person person = new TaxPayer() ;
-
-        int income = 360000;
-        int age = 66;
-        int year = 2017;
-        person.setIncome(income);
-        person.setAge(age);
 
 
-    }
 
 }

@@ -1,7 +1,11 @@
 main\TaxYear2017.class
 view\TaxView.class
+main\imp\TaxCalculator2017.class
 entity\Person.class
+main\TaxCalculator2018.class
 main\TaxCalculator.class
-entity\Year.class
 entity\TaxPayer.class
+main\Calculator.class
+main\imp\CalculatorImpl.class
+entity\Year.class
 main\TaxYear2018.class
