@@ -2,21 +2,12 @@ package view;
 
 import entity.Person;
 import entity.TaxPayer;
-import entity.Year;
 import main.TaxCalculator;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
-
-
 /**
  * Created by SamkeDl on 12/07/2017.
  */
@@ -29,6 +20,15 @@ public class TaxView implements Serializable{
     private int taxYear;
     private String incomeFreguency;
     private int medicalAidMember;
+    private String member;
+
+    public String getMember() {
+        return member;
+    }
+
+    public void setMember(String member) {
+        this.member = member;
+    }
 
     public int getMedicalAidMember() {
         return medicalAidMember;
@@ -56,6 +56,8 @@ public class TaxView implements Serializable{
 
     public Person getTaxCalculation(){
         System.out.println("Inside getTaxCalculation");
+        System.out.println("MEd aid member selected! "+member);
+        System.out.println("Medi members "+medicalAidMember);
         if(incomeFreguency.equals("Monthly")) {
             person.setIncome(person.getIncome().multiply(new BigDecimal(12)));
         }

@@ -22,34 +22,34 @@ public class TaxCalculator2017 implements Calculator,Serializable {
     public BigDecimal calculateTaxRate(BigDecimal taxableIncome) {
             System.out.println("Calculating tax on "+taxableIncome+" taxableIncome");
             BigDecimal tax = new BigDecimal(0);
-        BigDecimal taxableIcomeAbove = new BigDecimal(0);
+        BigDecimal taxableIncomeAbove ;
             if (taxableIncome.compareTo(new BigDecimal(188000)) <= 0) {
-                tax = taxableIncome.multiply(new BigDecimal(0.18));
+                tax = taxableIncome.multiply(new BigDecimal(0.18)).setScale(2,BigDecimal.ROUND_HALF_EVEN);
                 System.out.println("TAX calculated on 18%");
             }
             else if (taxableIncome.compareTo(new BigDecimal(188001))>= 0 && taxableIncome.compareTo(new BigDecimal(293600))<=0) {
-                taxableIcomeAbove = taxableIncome.subtract(new BigDecimal(188000)).multiply(new BigDecimal(0.26));
-                tax = taxableIcomeAbove.setScale(2,BigDecimal.ROUND_HALF_EVEN).add(new BigDecimal(33840));
+                taxableIncomeAbove = taxableIncome.subtract(new BigDecimal(188000)).multiply(new BigDecimal(0.26));
+                tax = taxableIncomeAbove.setScale(2,BigDecimal.ROUND_HALF_EVEN).add(new BigDecimal(33840));
                 System.out.println("TAX calculated on 26%");
             }
             else if (taxableIncome.compareTo(new BigDecimal(293601))>=0 && taxableIncome.compareTo(new BigDecimal(406400))<=0) {
-                taxableIcomeAbove = taxableIncome.subtract(new BigDecimal(293600)).multiply(new BigDecimal(0.31));
-                tax = taxableIcomeAbove.setScale(2,BigDecimal.ROUND_HALF_EVEN).add(new BigDecimal(61296));
+                taxableIncomeAbove = taxableIncome.subtract(new BigDecimal(293600)).multiply(new BigDecimal(0.31));
+                tax = taxableIncomeAbove.setScale(2,BigDecimal.ROUND_HALF_EVEN).add(new BigDecimal(61296));
                 System.out.println("TAX calculated on 31%" +tax);
             }
             else if (taxableIncome.compareTo(new BigDecimal(406401))>=0 && taxableIncome.compareTo(new BigDecimal(550100))<=0) {
-                taxableIcomeAbove = taxableIncome.subtract(new BigDecimal(406400)).multiply(new BigDecimal(0.36));
-                tax = taxableIcomeAbove.setScale(2,BigDecimal.ROUND_HALF_EVEN).add(new BigDecimal(96264));
+                taxableIncomeAbove = taxableIncome.subtract(new BigDecimal(406400)).multiply(new BigDecimal(0.36));
+                tax = taxableIncomeAbove.setScale(2,BigDecimal.ROUND_HALF_EVEN).add(new BigDecimal(96264));
                 System.out.println("TAX calculated on 36%");
             }
             else if (taxableIncome.compareTo(new BigDecimal(550101))>=0 && taxableIncome.compareTo(new BigDecimal(701300))<=0) {
-                taxableIcomeAbove = taxableIncome.subtract(new BigDecimal(550100)).multiply(new BigDecimal(0.39));
-                tax = taxableIcomeAbove.setScale(2,BigDecimal.ROUND_HALF_EVEN).add( new BigDecimal(147996));
+                taxableIncomeAbove = taxableIncome.subtract(new BigDecimal(550100)).multiply(new BigDecimal(0.39));
+                tax = taxableIncomeAbove.setScale(2,BigDecimal.ROUND_HALF_EVEN).add( new BigDecimal(147996));
                 System.out.println("TAX calculated on 39%");
             }
             else if (taxableIncome.compareTo(new BigDecimal(701301))>=0) {
-                taxableIcomeAbove = taxableIncome.subtract(new BigDecimal(701300)).multiply(new BigDecimal(0.41));
-                tax = taxableIcomeAbove.setScale(2,BigDecimal.ROUND_HALF_EVEN).add(new BigDecimal(206964));
+                taxableIncomeAbove = taxableIncome.subtract(new BigDecimal(701300)).multiply(new BigDecimal(0.41));
+                tax = taxableIncomeAbove.setScale(2,BigDecimal.ROUND_HALF_EVEN).add(new BigDecimal(206964));
                 System.out.println("TAX calculated on 41%");
             }
             return tax;
@@ -62,7 +62,7 @@ public class TaxCalculator2017 implements Calculator,Serializable {
         else if (age >= AGE65 && age < AGE75)
             return PRIMARY_REBATE+SECONDARY_REBATE;
         else if (age >= AGE75)
-            return PRIMARY_REBATE+TERTIARY_REBATE;
+            return PRIMARY_REBATE+SECONDARY_REBATE+TERTIARY_REBATE;
         else
         return 0;
     }
