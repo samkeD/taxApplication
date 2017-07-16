@@ -5,23 +5,23 @@ import entity.TaxPayer;
 import main.TaxCalculator;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
+
 /**
  * Created by SamkeDl on 12/07/2017.
  */
 
-@ManagedBean(name = "taxview" ,eager = true)
+@ManagedBean(name = "taxview" )
 public class TaxView implements Serializable{
-
-
     private Person person= new TaxPayer();
     TaxCalculator taxCalculator=new TaxCalculator();
 
-    private int taxYear;
+    private Integer taxYear;
     private String incomeFreguency;
-    //@Size(min = 0)
     private int medicalAidMember;
     private String member;
 
@@ -49,11 +49,11 @@ public class TaxView implements Serializable{
         this.incomeFreguency = incomeFreguency;
     }
 
-    public int getTaxYear() {
+    public Integer getTaxYear() {
         return taxYear;
     }
 
-    public void setTaxYear(int taxYear) {
+    public void setTaxYear(Integer taxYear) {
         this.taxYear = taxYear;
     }
 
@@ -72,7 +72,6 @@ public class TaxView implements Serializable{
 
        return person;
     }
-
 
     private boolean payer;
 
