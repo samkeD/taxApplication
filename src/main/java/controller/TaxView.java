@@ -4,7 +4,9 @@ import model.Person;
 import model.TaxPayer;
 import service.imp.TaxCalculator;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -55,19 +57,21 @@ public class TaxView implements Serializable{
     }
 
     public Person getTaxCalculation(){
-        System.out.println("Inside getTaxCalculation");
-        System.out.println("MEd aid member selected! "+member);
-        System.out.println("Medi members "+medicalAidMember);
-        if(incomeFreguency.equals("Monthly")) {
-            person.setIncome(person.getIncome().multiply(new BigDecimal(12)));
+        if(member.equals("yes") && medicalAidMember <=0)
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "Warning!","Must have at least one medical aid member"));
+        else if(member.equals("no") && medicalAidMember>0)
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "Warning!","Please select that you are medical aid member"));
+        else {
+            if(incomeFreguency.equals("Monthly")) {
+                person.setIncome(person.getIncome().multiply(new BigDecimal(12)));
+            }
+            person = taxCalculator.findTax(taxYear, person, incomeFreguency, medicalAidMember);
+            if (person != null)
+                payer = true;
         }
-        System.out.println("TAX YEAR: "+taxYear+" P: "+person.getIncome());
-         person = taxCalculator.findTax(taxYear,person,incomeFreguency,medicalAidMember);
-
-        if(person!=null)
-            payer =true;
-
-       return person;
+        return person;
     }
 
     private boolean payer;

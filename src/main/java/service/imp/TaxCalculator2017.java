@@ -97,6 +97,7 @@ public class TaxCalculator2017 implements Calculator,Serializable {
         TaxCalculator2017 taxCalculator2017 = new TaxCalculator2017();
         TaxPayer taxPayer = new TaxPayer();
         taxPayer.setIncome(person.getIncome());
+        taxPayer.setAge(person.getAge());
         taxPayer.setMedicalAid(new BigDecimal(taxCalculator2017.calculateMedicalAidCredits(medicalAidDeduction)));
         taxPayer.setTaxableIncome(taxCalculator2017.calculateTaxableIncome(taxPayer.getIncome(),
                 taxPayer.getMedicalAid().intValue()));
@@ -143,6 +144,8 @@ public class TaxCalculator2017 implements Calculator,Serializable {
 
             taxPayer.setRebates(taxPayer.getRebates().divide(new BigDecimal(12),2,BigDecimal.ROUND_HALF_EVEN));
             System.out.println("setRebates = "+taxPayer.getRebates());
+
+            taxPayer.setIncome(taxPayer.getIncome().divide(new BigDecimal(12),2,BigDecimal.ROUND_HALF_EVEN));
 
         }
 

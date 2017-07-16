@@ -127,6 +127,7 @@ public class TaxCalculator2018 implements Calculator,Serializable {
         TaxCalculator2018 taxCalculator2018 = new TaxCalculator2018();
         TaxPayer taxPayer = new TaxPayer();
         taxPayer.setIncome(person.getIncome());
+        taxPayer.setAge(person.getAge());
         taxPayer.setMedicalAid(new BigDecimal(taxCalculator2018.calculateMedicalAidCredits(medicalAidDeduction)));
         taxPayer.setTaxableIncome(taxCalculator2018.calculateTaxableIncome(taxPayer.getIncome(),
                 taxPayer.getMedicalAid().intValue()));
@@ -158,6 +159,7 @@ public class TaxCalculator2018 implements Calculator,Serializable {
             taxPayer.setNetIncome(person.getIncome().subtract(taxPayer.getThreshold()));
         }
         if(incomeFrequency.equals("Monthly")){
+            taxPayer.setIncome(taxPayer.getIncome().divide(new BigDecimal(12),2,BigDecimal.ROUND_HALF_EVEN));
             taxPayer.setTaxBeforeCredits(taxPayer.getTaxBeforeCredits().divide(new BigDecimal(12),2,BigDecimal.ROUND_HALF_EVEN));
             taxPayer.setTaxAfterCredits(taxPayer.getTaxAfterCredits().divide(new BigDecimal(12),2,BigDecimal.ROUND_HALF_EVEN));
             taxPayer.setNetIncome(taxPayer.getNetIncome().divide(new BigDecimal(12),2,BigDecimal.ROUND_HALF_EVEN));

@@ -1,7 +1,7 @@
-service\TaxCalculator.class
-service\imp\TaxCalculator2017.class
 model\TaxPayer.class
 controller\TaxView.class
+service\imp\TaxCalculator2017.class
+service\imp\TaxCalculator.class
 service\Calculator.class
 model\Person.class
 service\imp\TaxCalculator2018.class

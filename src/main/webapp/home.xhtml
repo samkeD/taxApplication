@@ -21,24 +21,28 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <link rel="https://www.w3schools.com/w3css/4/w3.css"></link>
+
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>tax calculator app</title>
 </h:head>
 
 <h:body>
-<header class="w3-container w3-teal">
-    <h1>Calculate Tax</h1>
-</header>
-    <div id="container">
+    <header >
+        <h1 align="center" style=" ">Get Your Tax Calculation Done Today</h1>
+    </header>
+    <div id="container"  >
         <h:form id="calculate">
             <p:panel id="panel" header="Calculate My Tax">
-                <p:messages id="msgs" />
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
 
                 <h:panelGrid columns="3" cellpadding="5">
 
                     <p:outputLabel for="income" value="Income:" />
-                    <p:inputText id="income" value="#{taxview.person.income}" required="true" requiredMessage="Please enter your,income is required" label="Income" />
+                    <p:inputText id="income" value="#{taxview.person.income}" required="true" requiredMessage="Please enter your,income is required" label="Income" >
+                        <f:validateDoubleRange minimum="0"  />
+                    </p:inputText>
                     <p:message for="income" display="icon" />
 
                     <p:outputLabel for="frequency" value="Income Frequency:"  />
@@ -52,7 +56,9 @@
                     <p:message for="frequency" display="icon" />
 
                     <p:outputLabel for="age" value="Age:" />
-                    <p:inputText id="age" value="#{taxview.person.age}" required="true" requiredMessage="Please enter your age,age is required" label="Age" />
+                    <p:inputText id="age" value="#{taxview.person.age}" required="true" requiredMessage="Please enter your age,age is required" label="Age" >
+                        <f:validateDoubleRange minimum="18" maximum="150" />
+                    </p:inputText>
                     <p:message for="age" display="icon" />
 
                     <p:outputLabel for="taxYear" value="Tax Year:" />
@@ -71,10 +77,11 @@
                     </p:selectOneMenu>
                     <p:message for="member" display="icon" />
 
-                    <p:outputLabel  for="medicalAid" value="No of Medical Aid Members:" />
-                    <p:inputText id="medicalAid" value="#{taxview.medicalAidMember}"  />
+                    <p:outputLabel  for="medicalAid" value="No of Medical Aid Members:"/>
+                    <p:inputText id="medicalAid" value="#{taxview.medicalAidMember}"  >
+                        <f:validateDoubleRange minimum="0"  />
+                    </p:inputText>
                     <p:message for="medicalAid" display="icon" />
-
 
                     <p:commandButton value="Calculate" icon="ui-icon-check" action="#{taxview.getTaxCalculation}" ajax="false" update="payerOutput" />
                 </h:panelGrid>
@@ -83,10 +90,10 @@
             <p:outputPanel autoUpdate="true">
                 <p:outputPanel id="payerOutput" rendered="#{taxview.payer}" header="Tax Calculated">
                     <p:panel id="outputPanel" header="Your Tax is Calculated as Follows!">
-                        <h:outputText  value="You Earn an Annual Taxable income of R#{taxview.person.taxableIncome}" /><br/>
-                        <h:outputText value="Your Tax before your tax credits are deducted is R#{taxview.person.taxBeforeCredits} (PAYE)" /><br/>
-                        <h:outputText value="Your Tax credits/ rebate according to your age is R#{taxview.person.rebates}" /><br/>
-                        <h:outputText value="Your Tax after your tax credits are deducted is R#{taxview.person.taxAfterCredits} (PAYE)" /><br/>
+                        <h:outputText  value="You earn an annual taxable income of R#{taxview.person.taxableIncome}" /><br/>
+                        <h:outputText value="Your tax before your tax credits are deducted is R#{taxview.person.taxBeforeCredits} (PAYE)" /><br/>
+                        <h:outputText value="Your tax credits/ rebate according to your age of #{taxview.person.age} is R#{taxview.person.rebates}" /><br/>
+                        <h:outputText value="Your tax after your tax credits are deducted is R#{taxview.person.taxAfterCredits} (PAYE)" /><br/>
                         <h:outputText value="Your take home is R #{taxview.person.netIncome} #{taxview.incomeFreguency}" />
 
                     </p:panel>
