@@ -30,14 +30,15 @@
 
     <h1>Calculate Tax</h1>
     <div id="container">
-        <h:form id="response">
+        <h:form id="calculate">
             <p:panel id="panel" header="Calculate My Tax">
                 <p:messages id="msgs" />
 
                 <h:panelGrid columns="3" cellpadding="5">
 
                     <p:outputLabel for="income" value="Income:" />
-                    <p:inputText id="income" value="#{taxview.person.income}" required="true" requiredMessage="Income is required." label="Income"/>
+                    <p:inputText id="income" value="#{taxview.person.income}" required="true" requiredMessage="Income is required." label="Income">
+                    </p:inputText>
                     <p:message for="income" display="icon" />
 
                     <p:outputLabel for="frequency" value="Income Frequency:"  />
@@ -45,12 +46,15 @@
                         <f:selectItem itemLabel="Select Frequency" itemValue="" noSelectionOption="true" />
                         <f:selectItem itemLabel="Monthly" itemValue="Monthly" />
                         <f:selectItem itemLabel="Annually" itemValue="Annually" />
+                        <f:validateRequired/>
                     </p:selectOneMenu>
                     <p:message for="frequency" display="icon" />
 
                     <p:outputLabel for="age" value="Age:" />
-                    <p:inputText id="age" value="#{taxview.person.age}" required="true" requiredMessage="Age is required." />
+                    <p:inputText id="age" value="#{taxview.person.age}" required="true" requiredMessage="Age is required." label="Age">
+                    </p:inputText>
                     <p:message for="age" display="icon" />
+
 
                     <p:outputLabel for="taxYear" value="Tax Year:" />
                     <p:selectOneMenu id="taxYear" value="#{taxview.taxYear}" style="width:125px" required="true" requiredMessage="Tax Year is required.">
@@ -69,12 +73,16 @@
                     <p:message for="member" display="icon" />
 
                     <p:outputLabel  for="medicalAid" value="No of Medical Aid Members:" />
-                    <p:inputText id="medicalAid" value="#{taxview.medicalAidMember}"  required="true" />
+                    <p:inputText id="medicalAid" value="#{taxview.medicalAidMember}"  required="true" >
+
+                    </p:inputText>
+
                     <!--p:message for="member" display="icon" /-->
 
 
-                    <p:commandButton value="Calculate" update="display" oncomplete="PF('dlg').show()"
-                                     icon="ui-icon-check" action="#{taxview.getTaxCalculation}"  />
+                    <p:commandButton value="Calculate"
+                                     icon="ui-icon-check" action="#{taxview.getTaxCalculation}"
+                                     ajax="false" />
 
                     <p:dialog header="Tax Calculations" modal="true" showEffect="bounce" widgetVar="dlg" resizable="false">
                         <p:panelGrid columns="2" id="display" columnClasses="label,value">
@@ -104,6 +112,19 @@
 
                 </h:panelGrid>
             </p:panel>
+            <p:outputPanel >
+                <h:outputLabel>Response:</h:outputLabel>
+                <h:outputLabel value="#{taxview.person.taxableIncome}" />
+
+            </p:outputPanel>
+
+        </h:form>
+
+        <h:form id="response" hidden="true">
+            <h:panelGrid columns="2">
+                <h:outputLabel>Response:</h:outputLabel>
+                <h:outputLabel value="#{taxview.person.taxableIncome}" />
+            </h:panelGrid>
         </h:form>
     </div>
 

@@ -4,8 +4,8 @@ import entity.Person;
 import entity.TaxPayer;
 import main.TaxCalculator;
 
-import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 /**
@@ -14,11 +14,14 @@ import java.math.BigDecimal;
 
 @ManagedBean(name = "taxview" ,eager = true)
 public class TaxView implements Serializable{
+
+
     private Person person= new TaxPayer();
     TaxCalculator taxCalculator=new TaxCalculator();
 
     private int taxYear;
     private String incomeFreguency;
+    //@Size(min = 0)
     private int medicalAidMember;
     private String member;
 
