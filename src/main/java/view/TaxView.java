@@ -67,10 +67,22 @@ public class TaxView implements Serializable{
         System.out.println("TAX YEAR: "+taxYear+" P: "+person.getIncome());
          person = taxCalculator.findTax(taxYear,person,incomeFreguency,medicalAidMember);
 
+        if(person!=null)
+            payer =true;
+
        return person;
     }
 
 
+    private boolean payer;
+
+    public boolean isPayer() {
+        return payer;
+    }
+
+    public void setPayer(boolean payer) {
+        this.payer = payer;
+    }
 
     public Person getPerson() {
         return person;
