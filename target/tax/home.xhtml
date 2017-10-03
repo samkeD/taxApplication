@@ -40,7 +40,8 @@
                 <h:panelGrid columns="3" cellpadding="5">
 
                     <p:outputLabel for="income" value="Income:" />
-                    <p:inputText id="income" value="#{taxview.person.income}" required="true" requiredMessage="Please enter your,income is required" label="Income" >
+                    <p:inputText id="income" value="#{taxview.person.income}" required="true" requiredMessage="Please enter your,income is required"
+                                 title="income including benefits inputText" label="Income" >
                         <f:validateDoubleRange minimum="0"  />
                     </p:inputText>
                     <p:message for="income" display="icon" />
